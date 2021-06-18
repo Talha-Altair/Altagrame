@@ -1,5 +1,4 @@
 from flask import Flask, render_template, request, redirect, jsonify, redirect, url_for, flash
-import business as business
 from werkzeug.utils import secure_filename
 import os
 import csv
