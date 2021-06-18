@@ -22,7 +22,7 @@ def upload_files():
     if filename != '':
         file_ext = os.path.splitext(filename)[1]
         uploaded_file.save(os.path.join(app.config['UPLOAD_FOLDER'], filename))
-        store_file_name(filename)
+        store_data(filename)
 
     return '', 204
 
@@ -33,9 +33,11 @@ def create_chart():
 
     file_name = json_data['file_name']
 
+    chart_style = get_chart_style()
+
     result_dict,column_names = read_data(file_name)
 
-    return render_template('bar_graph.html', result_dict = result_dict, column_names = column_names)
+    return render_template(f'{chart_style}.html', result_dict = result_dict, column_names = column_names)
 
 def read_data(file_name):
 
@@ -47,15 +49,23 @@ def read_data(file_name):
 
     return result,list_of_column_names
 
-def store_file_name(file_name):
+def store_data(file_name):
 
     data_dict = {
         "file_name":file_name
     }
 
-    json_data = get_json()
+    store_json(data_dict)
+
+    chart_style = get_chart_style()
+
+    data_dict = {
+        "file_name":file_name,
+        "chart_style":chart_style
+    }
 
     store_json(data_dict)
+
 
 @app.route('/admin/view',methods=['GET','POST'])
 def get_json():
@@ -85,8 +95,28 @@ def flush_json():
         json.dump(empty_data_dict, outfile)
 
     return 'Flushed'
+    
+    
+def get_chart_style():
 
+    chart_style = "N/A"
 
+    json_data = get_json()
+
+    file_name = json_data['file_name']
+
+    result_dict,column_names = read_data(file_name)
+
+    # print(result_dict)
+
+    if len(column_names) == 2:
+        if isinstance(result_dict[column_names[1]][1], float) or isinstance(result_dict[column_names[1]][1], int):
+            chart_style = "bar_graph"
+    if len(column_names) == 4:
+        if isinstance(result_dict[column_names[1]][1], float) or isinstance(result_dict[column_names[1]][1], int) :
+            chart_style = "scatter-box"
+
+    return chart_style
 
 if __name__ == "__main__":
     app.run(debug=True,host="0.0.0.0")
