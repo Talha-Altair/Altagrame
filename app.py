@@ -115,6 +115,9 @@ def get_chart_style():
     if len(column_names) == 4:
         if isinstance(result_dict[column_names[1]][1], float) or isinstance(result_dict[column_names[1]][1], int) :
             chart_style = "scatter-box"
+    if len(column_names) == 2:
+        if isinstance(result_dict[column_names[0]][1], int) and (isinstance(result_dict[column_names[1]][1], int) or isinstance(result_dict[column_names[1]][1], float)):
+            chart_style = "area-simple"
 
     return chart_style
 
