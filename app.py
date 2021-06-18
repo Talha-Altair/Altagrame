@@ -55,8 +55,6 @@ def store_file_name(file_name):
 
     json_data = get_json()
 
-    # json_data["data"].append(data_dict)
-
     store_json(data_dict)
 
 @app.route('/admin/view',methods=['GET','POST'])
