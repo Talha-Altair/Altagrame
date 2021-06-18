@@ -2,3 +2,4 @@ static/*.csv
 
 __pycache__/
 
+data.json
