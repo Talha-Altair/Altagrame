@@ -4,6 +4,36 @@ import json
 
 USERS_JSONPATH = "data.json"
 
+def check_int(value):
+    if isinstance(value, int):
+        return True
+    else:
+        return False
+
+def check_float(value):
+    if isinstance(value, float):
+        return True
+    else:
+        return False
+
+
+def check_string(value):
+    if isinstance(value, str):
+        return True
+    else:
+        return False
+
+
+def check_negative(value):
+    for i in value:
+        if i < 0:
+            return True
+    return False
+
+
+def check(value):
+    pass
+
 def get_chart_style():
 
     chart_style = "N/A"
@@ -17,14 +47,18 @@ def get_chart_style():
     # print(result_dict)
 
     if len(column_names) == 2:
-        if isinstance(result_dict[column_names[1]][1], float) or isinstance(result_dict[column_names[1]][1], int):
+        if check_float(result_dict[column_names[1]][1]) or check_int(result_dict[column_names[1]][1]):
             chart_style = "bar_graph"
-    if len(column_names) == 4:
-        if isinstance(result_dict[column_names[1]][1], float) or isinstance(result_dict[column_names[1]][1], int) :
+    if len(column_names) == 4:  
+        if check_float(result_dict[column_names[1]][1]) or check_int(result_dict[column_names[1]][1]) :
             chart_style = "scatter-box"
     if len(column_names) == 2:
-        if isinstance(result_dict[column_names[0]][1], int) and (isinstance(result_dict[column_names[1]][1], int) or isinstance(result_dict[column_names[1]][1], float)):
+        if check_int(result_dict[column_names[0]][1]) and (check_int(result_dict[column_names[1]][1]) or check_float(result_dict[column_names[1]][1])):
             chart_style = "area-simple"
+    if len(column_names) == 2:
+        if check_int(result_dict[column_names[0]][1]) and (check_int(result_dict[column_names[1]][1]) or check_float(result_dict[column_names[1]][1])) and check_negative(result_dict[column_names[1]]):
+            chart_style = "line-chart"
+    
 
     return chart_style
 
