@@ -77,21 +77,6 @@ def store_data(file_name):
 
     store_json(data_dict)
 
-    chart_list = chart_engine.get_chart_style()
-
-    num = random.randint(0,len(chart_list))
-
-    print(chart_list)
-
-    chart_style = chart_list[num]
-
-    data_dict = {
-        "file_name":file_name,
-        "chart_style":chart_style
-    }
-
-    store_json(data_dict)
-
 
 @app.route('/admin/view',methods=['GET','POST'])
 def get_json():
