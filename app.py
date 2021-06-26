@@ -1,3 +1,14 @@
+'''
+Created on 
+
+Course work: 
+
+@author: Altair
+
+Source:
+    
+'''
+
 from flask import Flask, render_template, request, redirect, jsonify, redirect, url_for, flash
 from werkzeug.utils import secure_filename
 import os
