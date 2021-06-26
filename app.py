@@ -5,6 +5,7 @@ import csv
 import pandas as pd
 import json
 import chart_engine
+import random
 
 UPLOAD_PATH = "static/"
 USERS_JSONPATH = "data.json"
@@ -27,6 +28,13 @@ def upload_files():
 
     return '', 204
 
+@app.route('/show_options', methods=['POST','GET'])
+def show_options():
+
+    chart_list = chart_engine.get_chart_style()
+
+    return render_template('choose-chart.html',chart_list = chart_list)
+
 @app.route('/show', methods=['POST','GET'])
 def create_chart():
 
@@ -34,7 +42,7 @@ def create_chart():
 
     file_name = json_data['file_name']
 
-    chart_style = chart_engine.get_chart_style()
+    chart_style = request.form['options']
 
     result_dict,column_names = read_data(file_name)
 
@@ -58,7 +66,13 @@ def store_data(file_name):
 
     store_json(data_dict)
 
-    chart_style = chart_engine.get_chart_style()
+    chart_list = chart_engine.get_chart_style()
+
+    num = random.randint(0,len(chart_list))
+
+    print(chart_list)
+
+    chart_style = chart_list[num]
 
     data_dict = {
         "file_name":file_name,

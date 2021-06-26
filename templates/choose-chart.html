@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Document</title>
+</head>
+
+<body>
+  <div class="grid">
+
+    <div>
+      Choose:
+      <form action="/show" method="POST">
+
+        {% for chart in chart_list %}
+
+        <input type="radio" name="options" id="{{chart}}" value="{{chart}}"> {{chart}} </input><br>
+        {% endfor %}
+        <p><input type=submit value=View></p>
+      </form>
+    </div>
+</body>
+
+<style>
+  @import url("https://fonts.googleapis.com/css?family=Roboto:400,400i,700");
+
+  .grid {
+    display: grid;
+    grid-template-columns: 1fr max-content 1fr;
+    gap: 1rem;
+    justify-items: center;
+    align-items: center;
+    margin: 0 0 2rem 0;
+  }
+
+  .grid>div {
+    border: 1px solid black;
+    padding: 2rem;
+    border-radius: 8px;
+  }
+
+  .grid>div:first-child {
+    justify-self: end;
+  }
+
+  .grid>div:last-child {
+    justify-self: start;
+    align-self: stretch;
+    display: grid;
+    place-items: center;
+  }
+
+  body,
+  select,
+  input {
+    font-family: Roboto, sans-serif;
+  }
+
+  body {
+    margin: 2rem;
+    text-align: center;
+  }
+</style>
+
+</html>

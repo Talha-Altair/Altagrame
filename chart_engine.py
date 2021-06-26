@@ -43,23 +43,29 @@ def get_chart_style():
 
     result_dict,column_names = read_data(file_name)
 
+    chart_list = []
+
     # print(result_dict)
 
     if len(column_names) == 2:
         if check_float(result_dict[column_names[1]][1]) or check_int(result_dict[column_names[1]][1]):
             chart_style = "bar_graph"
+            chart_list.append(chart_style)
     if len(column_names) == 4:  
         if check_float(result_dict[column_names[1]][1]) or check_int(result_dict[column_names[1]][1]) :
             chart_style = "scatter-box"
+            chart_list.append(chart_style)
     if len(column_names) == 2:
         if check_int(result_dict[column_names[0]][1]) and (check_int(result_dict[column_names[1]][1]) or check_float(result_dict[column_names[1]][1])):
             chart_style = "area-simple"
+            chart_list.append(chart_style)
     if len(column_names) == 2:
         if check_int(result_dict[column_names[0]][1]) and (check_int(result_dict[column_names[1]][1]) or check_float(result_dict[column_names[1]][1])) and check_negative(result_dict[column_names[1]]):
             chart_style = "line-chart"
+            chart_list.append(chart_style)
     
 
-    return chart_style
+    return chart_list
 
 def get_json():
 
