@@ -1,4 +1,3 @@
-from app import USERS_JSONPATH
 import pandas as pd
 import json
 
