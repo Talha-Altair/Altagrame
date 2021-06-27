@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Altagrame</title>
+    <script src="https://code.highcharts.com/highcharts.js"></script>
+    <script src="https://code.highcharts.com/highcharts-3d.js"></script>
+</head>
+
+<body>
+    <div id="container" style="height: 400px"></div>
+</body>
+<style>
+    #container {
+        height: 400px;
+        min-width: 310px;
+        max-width: 800px;
+        margin: 0 auto;
+    }
+</style>
+<script>
+
+    var result_dict = JSON.parse('{{result_dict|tojson}}')
+    var column_names = JSON.parse('{{column_names|tojson}}')
+
+    var first_column = column_names[0]
+    var second_column = column_names[1]
+
+    console.log(result_dict, column_names, first_column, second_column)
+
+    var first_values = result_dict[first_column];
+    var second_values = result_dict[second_column];
+
+    var final_list = [];
+
+
+    for (let i = 0; i < first_values.length; i++) {
+        current_single_dict = {
+            name:first_values[i],
+            y:second_values[i]
+        }
+        final_list.push(current_single_dict)
+      }
+
+    Highcharts.chart('container', {
+        chart: {
+            type: 'pie',
+            options3d: {
+                enabled: true,
+                alpha: 15,
+                beta: 15
+            }
+        },title: {
+            text: first_column + '/' + second_column
+        },
+        plotOptions: {
+            pie: {
+                allowPointSelect: true,
+                slicedOffset: 25,
+                depth: 25
+            }
+        },
+        series: [{
+            name:second_column + ' in',
+            data: final_list
+        }]
+    });
+
+</script>
+
+</html>

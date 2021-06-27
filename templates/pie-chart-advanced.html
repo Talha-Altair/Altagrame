@@ -1,0 +1,209 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Altagrame</title>
+    <script src="https://code.highcharts.com/highcharts.js"></script>
+    <script src="https://code.highcharts.com/highcharts-3d.js"></script>
+</head>
+
+<body>
+    <script src="https://code.highcharts.com/highcharts.js"></script>
+    <script src="https://code.highcharts.com/modules/exporting.js"></script>
+    <script src="https://code.highcharts.com/modules/export-data.js"></script>
+    <script src="https://code.highcharts.com/modules/accessibility.js"></script>
+    <script src="https://code.highcharts.com/modules/pattern-fill.js"></script>
+    <script src="https://code.highcharts.com/themes/high-contrast-light.js"></script>
+
+    <div id="chart-wrap">
+        <label id="patterns-enabled-label">
+            <input type="checkbox" id="patterns-enabled" checked>
+            Enable color patterns
+        </label>
+
+        <figure class="highcharts-figure">
+            <div id="container"></div>
+            <p class="highcharts-description">
+            </p>
+        </figure>
+    </div>
+
+</body>
+<style>
+    #patterns-enabled {
+        width: 17px;
+        height: 17px;
+        vertical-align: middle;
+        margin-top: 0;
+        cursor: pointer;
+    }
+
+    #patterns-enabled-label {
+        cursor: pointer;
+    }
+
+    #container {
+        height: 420px;
+    }
+
+    #chart-wrap {
+        min-width: 350px;
+        max-width: 700px;
+        margin: 1em auto;
+        font-family: sans-serif;
+    }
+
+    .highcharts-figure,
+    .highcharts-data-table table {
+        margin: 1em auto;
+    }
+
+    .highcharts-data-table table {
+        font-family: Verdana, sans-serif;
+        border-collapse: collapse;
+        border: 1px solid #EBEBEB;
+        margin: 10px auto;
+        text-align: center;
+        width: 100%;
+        max-width: 500px;
+    }
+
+    .highcharts-data-table caption {
+        padding: 1em 0;
+        font-size: 1.2em;
+        color: #555;
+    }
+
+    .highcharts-data-table th {
+        font-weight: 600;
+        padding: 0.5em;
+    }
+
+    .highcharts-data-table td,
+    .highcharts-data-table th,
+    .highcharts-data-table caption {
+        padding: 0.5em;
+    }
+
+    .highcharts-data-table thead tr,
+    .highcharts-data-table tr:nth-child(even) {
+        background: #f8f8f8;
+    }
+
+    .highcharts-data-table tr:hover {
+        background: #f1f7ff;
+    }
+</style>
+<script>
+
+    var result_dict = JSON.parse('{{result_dict|tojson}}')
+    var column_names = JSON.parse('{{column_names|tojson}}')
+
+    var first_column = column_names[0]
+    var second_column = column_names[1]
+
+    var clrs = Highcharts.getOptions().colors;
+    var pieColors = [clrs[2], clrs[0], clrs[3], clrs[1], clrs[4]];
+
+    // Get a default pattern, but using the pieColors above.
+    // The i-argument refers to which default pattern to use
+    function getPattern(i) {
+        return {
+            pattern: Highcharts.merge(Highcharts.patterns[i], {
+                color: pieColors[i]
+            })
+        };
+    }
+
+    // Get 5 patterns
+    var patterns = [0, 1, 2, 3, 4].map(getPattern);
+
+    var first_values = result_dict[first_column];
+    var second_values = result_dict[second_column];
+
+    var final_list = [];
+
+
+    for (let i = 0; i < first_values.length; i++) {
+        current_single_dict = {
+            name:first_values[i],
+            y:second_values[i]
+        }
+        final_list.push(current_single_dict)
+      }
+
+    var chart = Highcharts.chart('container', {
+        chart: {
+            type: 'pie'
+        },
+
+        title: {
+            text: first_column + '/' + second_column
+        },
+
+        subtitle: {
+            text: ''
+        },
+
+        colors: patterns,
+
+        tooltip: {
+            valueSuffix: '%',
+            borderColor: '#8ae'
+        },
+
+        plotOptions: {
+            series: {
+                dataLabels: {
+                    enabled: true,
+                    connectorColor: '#777',
+                    format: '<b>{point.name}</b>: {point.percentage:.1f} %'
+                },
+                point: {
+                    events: {
+                        click: function () {
+                            window.location.href = this.website;
+                        }
+                    }
+                },
+                cursor: 'pointer',
+                borderWidth: 3
+            }
+        },
+
+        series: [{
+            name: 'Screen reader usage',
+            data: final_list
+        }],
+
+        responsive: {
+            rules: [{
+                condition: {
+                    maxWidth: 500
+                },
+                chartOptions: {
+                    plotOptions: {
+                        series: {
+                            dataLabels: {
+                                format: '<b>{point.name}</b>'
+                            }
+                        }
+                    }
+                }
+            }]
+        }
+    });
+
+    // Toggle patterns enabled
+    document.getElementById('patterns-enabled').onclick = function () {
+        chart.update({
+            colors: this.checked ? patterns : pieColors
+        });
+    };
+
+</script>
+
+</html>
