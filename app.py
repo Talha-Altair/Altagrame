@@ -4,8 +4,6 @@ Created on
 Course work: 
 
 @author: Altair
-
-Source:
     
 '''
 

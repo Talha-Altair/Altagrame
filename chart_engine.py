@@ -1,3 +1,12 @@
+'''
+Created on 
+
+Course work: 
+
+@author: Altair
+    
+'''
+
 import pandas as pd
 import json
 
