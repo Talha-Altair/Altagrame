@@ -53,6 +53,10 @@ def get_chart_style():
             chart_list.append(chart_style)
     if len(column_names) == 2:
         if check_float(result_dict[column_names[1]][1]) or check_int(result_dict[column_names[1]][1]):
+            chart_style = "bar-graph-sideways"
+            chart_list.append(chart_style)
+    if len(column_names) == 2:
+        if check_float(result_dict[column_names[1]][1]) or check_int(result_dict[column_names[1]][1]):
             chart_style = "bar-graph-inverted"
             chart_list.append(chart_style)
     if len(column_names) == 2:
