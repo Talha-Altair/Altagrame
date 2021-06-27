@@ -49,7 +49,15 @@ def get_chart_style():
 
     if len(column_names) == 2:
         if check_float(result_dict[column_names[1]][1]) or check_int(result_dict[column_names[1]][1]):
-            chart_style = "bar_graph"
+            chart_style = "bar-graph"
+            chart_list.append(chart_style)
+    if len(column_names) == 2:
+        if check_float(result_dict[column_names[1]][1]) or check_int(result_dict[column_names[1]][1]):
+            chart_style = "bar-graph-inverted"
+            chart_list.append(chart_style)
+    if len(column_names) == 2:
+        if check_float(result_dict[column_names[1]][1]) or check_int(result_dict[column_names[1]][1]):
+            chart_style = "bar-graph-framed"
             chart_list.append(chart_style)
     if len(column_names) == 4:  
         if check_float(result_dict[column_names[1]][1]) or check_int(result_dict[column_names[1]][1]) :
